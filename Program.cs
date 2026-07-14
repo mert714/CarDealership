@@ -4,7 +4,7 @@ namespace CarDealership
 {
     internal class Program
     {
-        private const string FileName = "cars.txt";
+        private const string FileName = "../../../cars.txt";
         private static readonly List<Car> Cars = new();
 
         public static void Main()
@@ -124,36 +124,38 @@ namespace CarDealership
 
         private static void CheckAvailability()
         {
-            Console.WriteLine("--- Проверка на наличност ---");
-            Console.WriteLine("Търсене по марка и/или модел. Може да оставите едното поле празно.");
+            Console.WriteLine("--- Налични автомобили ---");
 
-            Console.Write("Марка: ");
-            string make = Console.ReadLine()?.Trim() ?? string.Empty;
+            var availableCars = Cars.Where(c => c.Available).ToList();
 
-            Console.Write("Модел: ");
-            string model = Console.ReadLine()?.Trim() ?? string.Empty;
-
-            if (string.IsNullOrWhiteSpace(make) && string.IsNullOrWhiteSpace(model))
+            if (availableCars.Count == 0)
             {
-                Console.WriteLine("Трябва да въведете поне марка или модел.");
+                Console.WriteLine("Няма налични автомобили.");
                 return;
             }
 
-            var foundCars = Cars.Where(c =>
-                (string.IsNullOrWhiteSpace(make) || c.Make.Contains(make, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrWhiteSpace(model) || c.Model.Contains(model, StringComparison.OrdinalIgnoreCase))
-            ).ToList();
-
-            if (foundCars.Count == 0)
-            {
-                Console.WriteLine("Няма намерени автомобили по зададените критерии.");
-                return;
-            }
-
-            foreach (Car car in foundCars)
+            foreach (Car car in availableCars)
             {
                 Console.WriteLine(car);
             }
+        
+            
+
+            //var foundCars = Cars.Where(c =>
+            //    (string.IsNullOrWhiteSpace(make) || c.Make.Contains(make, StringComparison.OrdinalIgnoreCase)) &&
+            //    (string.IsNullOrWhiteSpace(model) || c.Model.Contains(model, StringComparison.OrdinalIgnoreCase))
+            //).ToList();
+
+            //if (foundCars.Count == 0)
+            //{
+            //    Console.WriteLine("Няма намерени автомобили по зададените критерии.");
+            //    return;
+            //}
+
+            //foreach (Car car in foundCars)
+            //{
+            //    Console.WriteLine(car);
+            //}
         }
 
         private static void ShowAllCars()
